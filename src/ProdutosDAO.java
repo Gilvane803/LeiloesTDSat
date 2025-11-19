@@ -8,11 +8,14 @@
  * @author Adm
  */
 
+import java.beans.PersistenceDelegate;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ProdutosDAO {
@@ -24,19 +27,39 @@ public class ProdutosDAO {
     
     public void cadastrarProduto (ProdutosDTO produto){
         
+        String sql = "INSERT INTO produtos (nome, valor,status) VALUES (?,?,?)";
+                
+        conn = new conectaDAO().connectDB();
         
-        //conn = new conectaDAO().connectDB();
+         try
+              {
+                 prep = conn.prepareStatement(sql);
+                 prep.setString(1,produto.getNome());
+                 prep.setInt(2,produto.getValor());
+                 prep.setString(3,produto.getStatus());
+                 
+                 prep.execute();
+                 prep.close();
+                 
+                 JOptionPane.showMessageDialog(null,"Cadastro executado com exito");
+              }
+        catch (Exception e)
+              {
+                  JOptionPane.showMessageDialog(null, e);
+              }
         
         
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
-        
+   
         return listagem;
+}
+        
     }
     
     
     
         
-}
+
 
